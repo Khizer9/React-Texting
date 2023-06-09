@@ -1,9 +1,14 @@
 import { useState } from 'react';
 import './App.css';
-// import About from './components/About';
+import About from './components/About';
 import Navbar from './components/Navbar';
 import TextForm from './components/TextForm';
 import Alert from './components/Alert';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route
+} from "react-router-dom";
 
 function App() {
 
@@ -34,14 +39,30 @@ function App() {
     }
   }
 
+  const toggleGreenMode = () => {
+    if(mode === 'light'){
+      setMode('green');
+      document.body.style.backgroundColor = 'green'
+    }
+    else{
+      setMode('light');
+      document.body.style.backgroundColor = 'white'
+    }
+  }
+
   return (
    <>
-    <Navbar title="TextingText" aboutText="About" mode={mode} toggleMode={toggleMode}/>
+    <Router>
+    <Navbar title="TextingText" aboutText="About" mode={mode} toggleMode={toggleMode} toggleGreenMode={toggleGreenMode}/>
     <Alert alert={alert}/>
     <div className="container my-3">
-      {/* <About/> */}
-      <TextForm showAlert={showAlert} heading="Enter the text to analyze below" mode={mode}/>
+    <Routes>
+          <Route exact path='/about' element={<About/>} />
+          <Route exact path='/' element={<TextForm showAlert={showAlert} heading="Enter the text to analyze below" mode={mode}/>} />
+        </Routes>
+      
     </div>
+    </Router>
    </>
   );
 }
